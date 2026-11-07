@@ -1,21 +1,275 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>초신성 데이터로 발견하는 허블 법칙</title><link rel="stylesheet" href="style.css"></head><body>
-<header><div><h1>초신성 데이터로 발견하는 우주의 팽창</h1><p>실제 자료를 표본으로 뽑고, 계산하고, 점을 찍으며 최소제곱 직선을 찾아봅니다.</p></div></header>
-<nav id="tabs"><button data-tab="1" ><b>1</b>표본 선택</button><button data-tab="2" disabled><b>2</b>v와 r 계산</button><button data-tab="3" disabled><b>3</b>좌표 찍기</button><button data-tab="4" disabled><b>4</b>기울기 실험</button><button data-tab="5" disabled><b>5</b>최소제곱법</button></nav>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>초신성 데이터로 설명하는 우주의 팽창</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div><span class="badge">AI × 수학</span><h1>초신성 데이터로 설명하는 우주의 팽창</h1><p>AI는 데이터로 어떻게 학습하고 예측할까요? 표본을 뽑고, 손실함수를 줄이고, 처음 보는 초신성을 예측해 봅니다.</p></div></header>
+<nav id="tabs" aria-label="활동 단계"></nav>
 <main>
-<section class="stage" data-step="1"><span class="tag">STEP 1</span><h2>탐구할 초신성을 선택하세요</h2><p class="lead">STScI Pan-STARRS 원본 자료 1,048개가 이 파일 안에 포함되어 있어 휴대폰에서도 바로 사용할 수 있습니다.</p>
-<div class="controls"><label>표본 개수 (20~1,048)<input id="count" type="number" min="20" max="1048" value="30"></label><button class="primary" id="pick">무작위 표본 뽑기</button></div>
-<div class="stats"><div><small>전체 자료</small><b id="totalCount">1,048개</b></div><div><small>선택한 표본</small><b id="picked">0개</b></div><div><small>사용 변수</small><b><i>zcmb</i>, <i>mb</i></b></div></div>
-<div class="tablewrap"><table><thead><tr><th>번호</th><th>Ia형 초신성</th><th><button class="sort" data-key="z">적색편이 <i>zcmb</i> ↕</button></th><th><button class="sort" data-key="m">겉보기등급 <i>mb</i> ↕</button></th></tr></thead><tbody id="sampleRows"><tr><td colspan="4">표본을 뽑아 주세요.</td></tr></tbody></table></div></section>
 
-<section class="stage" data-step="2" hidden><span class="tag">STEP 2</span><h2>후퇴속도 <i>v</i>와 거리 <i>r</i>을 계산하세요</h2><div class="formula-grid"><div class="formula"><small>후퇴속도</small><i>v</i> = <i>c</i> × <i>zcmb</i><br><i>c</i> = 3×10<sup>5</sup> km/s</div><div class="formula"><small>거리</small><i>mb</i> − (−19.3) = 5 log <i>r</i><sub>pc</sub> − 5<br><i>r</i><sub>Mpc</sub> = 10<sup>(<i>mb</i> − 5.7)/5</sup><br><span class="note">−19.3은 Ia형 초신성의 절대등급입니다.</span></div></div>
-<details class="source-image"><summary>원리 자료 이미지 보기</summary><img alt="후퇴속도와 거리 계산 원리" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+AAAAV7CAIAAAApNFKQAAAACXBIWXMAABJ0AAASdAHeZh94AAAgAElEQVR4nO3dO1Yi3d7A4c23zlCKN3A5AhgBdGJkagYhJp0ZkplAiJmpkUlTI8ARuAyk5sIX4IVLcRX0rz5Pcs7b3UJdEH61a1dRmUwmCQAAiOH/vnoBAACAdwIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAT6z5O3K5V2/tVL8aZ8cYIt5CpHXswtH/5gSxFsqxf9eqXeL1LK29P//RwH3gpfvFH3f/q3zX9wez/y8RbpY4q8365XXtTr7XxmEXfZATPrt+9+s9eOJNib44E/N3/GPvp1BPq3VOT9dv39A6Pdz7f6zVv3273hN3/+GSuVSr2+9dN+kj3WLm9XSh3onazo18sf/1gfBEdenwMu0ZGPej7z+faz8yftXh/NRb7P+8SGx1z5qt60oVf/ZOh0KPr1avMuXY0nk8lkMhlfnT82q/UjvqLstSP52Z+bx3jZ8LUE+vfz+nlxO3n9wEh3zeox3yzzdqXafTq5un35iJpMJpPb26uTp2714OWz/oPkCJ8KreFkyaiTHeKhs85o+bEnw9amn1tMzOZNSjfNLT9Sj7g+pQu6/gXQGJRsgclkMmhs/QS7vhiWnnLzBt/F0iKV7Z2NvxbF82NKj89H/QjN2/Vq8/H8PSwP8z5R/qreZsfO/OS4V0u13tv7ybFeoIeQX18+tIajQeNlEbNGZzTupZvuyi1Z9h629fukvXYkP/tz80gvG76WQP9uiv7F/OdFyhqD0bD1cHlxpN/Got+9qfVuB51GNvN+nGWNzuC2Vyv7nJprmKV+Wf+usfaDZNyrHWEFP1/tpLrur+cT82WlZz4YN32kfpbi+XGrf9avv34e7XOiteyI4wsTYdUhx7z1u6foX1w+pPRweb3bKNcuRZ+3mzepNx513sNy+j5xfZA0mD82m9nF23t4Gm/9b8ueoMj7/dJhwr2WZuUzPz8u/75m/52uWfzF97AdjhB/1l4re46Ve22Ln/2An/25eeSXDV9FoH8346eH1Dpb/PhvnLW2fOdcGuubeT84lPUNc8yo+oy1+6Atq/blH+f9evUy9cbjXrqs1mOdtSz+3T2kdSOJM+bT8uWTqHr5cITFKh3inh3WPMCLoZieul4YKH05fb1+cxR5e7pLJ5NxbzpXYpudWjw/vsfR7BDtirUpnh9T7fzPwq9a46yVbu4P/6E9ftptT+7y0knTujodLh70ZI3On9QtGSbMOre9x+aB0q60xfP7m01H2Xv5UXstle64lXtt2SH344/+3Pzclw2fR6D/NqvGI1eP8mSdq9bD5cVCehRF3m9fXKbW1Zr3jdVXVh3J7mv3GXYfNy6mBVipdp/Ox5NRJ8s6o8n46qlbnU4u3BCBnyFvVy8fWr1e7eHyYtfP0JdPou1OiKz6aKzsMs9n0Hgf1vzoi6Ho16vV7tPZ7e3t/JPc3t6ePXWr1bLFet2jlWo3nQ/Ho06WUtYZjYfnqVutbCz74t/dQ62Wbqa5MjtE+7Uv7b1Ms2160Lm8rR4uqws7N7++TL2/Zecksj/ntbJhwqxz1dolJNdp/O3Vbprvb19F3q83b2rr3vh+pF33Wlq541bttWWH3I8f87M/NwlKoH831ZNayWFxfn9TMj5wKI3BZHx18tS9qL630cVF9+nkajxaeS4/b1eql4tXVm1+q107B/0YQ64L/fcpVxOe/vf+5vzy/O+bJm9XKtWLi/t0djuejAbv7+NZYzCaTG7P0v3FRXXlkpb27IHXqsjb9eZNrTcedDqjce/0sXnEj5E1U1wizPPZRtGvV6vTX5jxZDR4OxGdUtboDEaT8e3Lr9eKX5Cif3GZerejca9209zuUC/77zQ93P1b+KfHGvndRd6uXp4OB40s64zGvcduvT2/Qq9zuV53btHv3iwPD77I/pyXvR+m1Dg72An+9+Oo6ZtQ9+50uOaN70NP9WP2Wlq341butWWH2o8/+nMz7suGD1r52UdU414tpVpr+DoleTxs1WanKA9bq6Jm02Dbutm+Oxq2lmZNzy3YyoVcuA5px6fcce1WLMX8yO7Ht8rKdVq9qz6s9KE//nzjYa81//J7+ePpn/aGJWs5s/rjXm1mAd7+Ythasc/3WeCNP3OArT4eD3utWm3hBECtVmv1huN9Xrzrnqs3++u9+Nu/9te9llLtbZcsvk984FdtsrgnFxZi7hdo9s+HvdrS+8J42Kq9rlDJIm1cylUb4Ii/XBuep+zM0PRfLPxN+WL/hL22cUG33zuH2o8/+3PzqC8bvooR9O9nYUBn9pz5BpuubzvcoFDppLjFOXGvY70Hutb8cGt3uNkQP0nRb1cqF92n6cB+Y27fZo3BaDK+PUv3F5XK+9ja9HRI9fLh9Qx49fLhdbcf9VRF2WmEQ97SIMsancFotHA982g0Wrgk7KPeJqy//Xq//vZf9Dduv8ZgNB6e3r2P/G77PrGttdesvtXA2+9dkV9PB587S6+dxdfTjPHTw8rx85TS6qm21ZPaR++TU3oTofrUhtfUYgy9v/u8/M2qt5afsdfSph23/QTpA+zHlNJP/9w8+suGryDQv6WXE+MvB8Vz58wPZ+MNDz/aP68jAT/ybWR2680U6rvSQD36Nv+ArDOYTEajwcoCnVbrZPI+K2fdLXm2/lRbMwe9dCuu+jj9+Mtsv73zgX1a/Os+nvaW26gzGI0622y/rDF4P4o40vvE1jY3Xco6o4X9VDw/zs0IK7Gi9dbfaWUrCy+l6Rvu7Wg0ej02O85b1/ffa2nzjtu60A+wH98e6kd/boZ62XAQAv032O8tY/2dc9f3T+mkuK3nxC3F7LyFKIsZtRu3XmmgfmCbL4z2Ld2lK9xX9cx8sDcGK1Jn4z0N9xm8agz2HPTab++svht+6bnq2Q2RdUazFyH8JCXf4FJ6newWdxopUkplrVc9+Rk3ZQ1k272WNu+4VXtt2Zftx+/2ucmPI9B/gw8kwr4ag2Hr4bK6eOuD3u2mx15Y1rKFXIirD67digHagD27XmMwmUzGKyxvtU+26RuHDn3ctOmz9SO7d+1NeY7zldpxvob8dcPOnxWaPRzcvPZFv770DS7jlzvg7Lrtirx9nf4OWzvd/W9HJft05vUc6BauK/3GvfZx3+lzkx9JoLPJnnHQGEzGvcVbHwR7m1kzQHuwnt1n823M2VUPmGXp30X14l/K5n18NT5o7VD4kb5/atU1UT/rwoK9zwfsZ/P44KZf8revjJmbrp9lWWMwGvfSwhfHrB0+Lfrt6+e/g0bWOGstjzzuepvvXcy8nstfTiVnAb/wex0/e6+ldTtu/V5bdsz9eEQ/+HOTz/K/r14AdlD060s3GnyoVi5n/rM1nJx94hKtl3UGo87gq5cisMZgMln15yu3W96uNA/8fOzq4XL+925O7fwTl6TE/PvE0s1mUkrp4fRq8vczl+nd+Okhta7KDyne5htns39y91yk5Qm1Rb9+8XQ1GmQpTW9WXr37V3TeU2Z6wd0hZwZkndGk86F/V/RX/9RP2mtp5Y5bs9fydr1585BqreHt7Jz3j+/HH/25Gftlw8cI9O9kuw+I/P74S3IEZe+iL5qV5bPItaVr5ziiNXunzEf3zic/3e5WPmPRr1fvPnNJSmwZksXz8RelRPWkli7v80GjpPZKYqx6UluKv2nn3Z3fjt4eI/tzXrucK/Tx00M6vZr+V96uNNPwOGcaDnXU+6P2Wirdcev2Wt7upqvxpJHy9sVFvzoq3Y9pr135oz83Y79s+BhTXAjiI9fWcGyfvHe8GH6urHM7/WrOuasLp1+0Wr1Mi9Nts/9Ol64lzNvVy9Or+b2e/Tmvzc6XmP0OmuL58YjfR/Mr7LjXUsmOW7vX8vvH87+NLKWs8fc8zdy0ZeG7hOxKfhGBzjZ2vdUdcz55862/C84XToX9XKs2wyGu6lu5iY/xZbdT615E32ufZp3R0lcsvn7R6vKxVuNvr7ZwLWHpvPusM5rcvt1Ceq7P/909fDTqNtxZassdUHpDwm9it72Wlnfcur1WPD/O/un7fc8X+/wAu/IT+dzkQyoTk1IBCGvnaQ1Fv169O3/pxqJfv0i337WLv7Wtd9zsPpr5/3P7MdmV/DLmoAMQWGMwbFW6/b+N7cqs6F9cpt545stXR8dcOlbaccctWNiPya7klzGCDgB8nbxdf/77NoJ+/d/oa7+3ASIwBx0A+DqNs9O767xIqciv75LvzYQk0AGAL9UYXKVutVKpdtOV782ElExxAQCAUIygAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHo317erlTaeaxHiqjo1yv1fpGirOfuS/G+BvutwszPH8r+m/LgO2HfByz69TU/WP6oe2/JGC89AMIT6OwmfmIUebtemaq3850q6uArV/RnluWwbVz+fHm7/vqElXq7v9vqr7bnAcHeO+KAS5K3KyUOfKCy/smi/8YAEI5A/26WEqB5k9JNc4sgWBUPu9RD0e/epHRzv1VuFf36imc8YiPl7Wrz8Xw4nkwm4+H5Y7P6dW1U9OvVy3Q1nkwmk8n4Kl1Wt1nlsq223Trk7Xq1+Xj+8oST8VW6a271lMeQtytzK/9lS9IYTBaMe7U1/35++y/9dm3eFa3h4hNOJoPGAdcIgJ9PoH83y71RZlUQlMXDtvVQ5P169TL1hsPeY7Na3250ttYbr1rGUScre5Z+fZseXfHPin73pta77TSylFLW6Nz2ajfdrwnDon9x+dAaDhrTtcwag3EvXV5sXJisM5rbTMPWds+Xt5s3qTcedV6eMGWNwWjYeri8/oIjlOl+GM+s/LD1sMXKB7C4/aU2AJ9PoH9PRZH32/X63FhrvV5v9/Pi0A1UvDxXpdp9Oh+OR51GozMaD8+futXKyzMe7imL/sXl6XCLCMo6t73H5lKij58e0ul/7+Gf/TmvPTyND7Z82yv+3T3Uen9n1yT7c157uPt3nEgtnh9T7fzPwjFP46yVbu4/XOj5/fS8ydYL8+/uYWFhGn97h1j54vlxZklmTwo1b8p/YvnEUfXyYZtnmpstdLg5OgCwmUD/hop+vVrtPp3d3t7Oju3d3l6dPHWra6cSLM2F2TDVJG9XqtWL7tPJ1e14MhrMjM52BqPJ+Pbq5Kl7Ua0eao5tfn2Z5qN2taxz1VocHS+eH1PtpLrwLx+fv6CtFg8VUvrKw4UPKfrdm9ZwuLS1V//Acp+nlP13mj688vn15UOtll6XZPZ00rozDcsnjspP37yvQX9httD549fNFgLg9xHo3890bPZ20MiyucjIskZncLt+nLJsisu6VmkMJpPJaDToNF6fa/YivSxrdAaj0aFO/Bf97s3yIPBqjbPNEziy/07Tw2V163HT8mOY3eaCp7TqUCGlox0uZP+dpuU9n9/frFiMreXti7vz8aDRGIzP7y4+MJBcPal9cOVfJjCNhq10WT3mkHZ+ffnQGs7OFup82WwhAH4jgf79ZH/Oaw+XF+3FuSVFkffbF5fLY5ffROm461pbTOAonh9f5sGvvzTw5QE3TPA/9ATk14OB2bHZxYtE56duTA82yuZzNAbDVrqcuTagyNv15k2td7t+sHidol+vd9PVyyFc1hldpe7FllcfHFqRt6uXp8NRJ0uNwWi8w3UQKw+6Vg2Jlx5dLR5fvOyJ3U8evS2MW7sAsIpA/4ayzmg8vjq5v7i4mM2Ni4vu08nVeLzh7P3Wym/CUnrTmE0zZbYyfirt86Jfr1TqrzEzf9fqxWg6yDSKgyhfksV5L68nNBZ32eKlte8HBi9/UzqfozEYjYend91pOFaq3XQ+3P/VUOTt+sXT+e1o9qikMRjdnj9197ras2zSz9bL0q9Xm4+98duyZJ3pum5ekjUHXau2TenOW1z8132080Hb21ks15sCsIpA/55eJpfM3W9iNDcVpVz5UGL5UN6G21lsVzuv44ybBzCL58eSfsv7//6MJsPT14Hy7L/TmVkiSyVVPanNjalvNyq/4X6Qex2KlE3oWD3v5VCyxuD9RTFzzcC+DzVY3qlZZzDaUP2lV8N+YOWLf92706VjjawxGG1aki1kndFSKzf+9mo3zdmTEf1686a27eURAPBBAv33mBlKHLbmpqMfaShvvvAXnnMp6cdPy3PEi/7zn06WiufHt7RrDIat946vnszPW8k6V610052WVZH3Ly4fWlcbG+4ghyKLj/nnvLYwaXn3OTzhNQalr56SQs+v9598lXVGo8GmY40VizK17qs/y7766HWA/u1kRMkBAgAcjUD/Ro4x0LvZyu83enW8qbTF+L8/WUrFv7v0nnbF88m6cdjGYDw8vWtWK5VKtXl3Ohx/1USCrHM7HYad7oUib1cv00cmhH+RvfZ/1rmavZCz6H90Nvy717t+zr7Sj3F/0fmTEZsPEN6smPBuxjkA2xPo30j5QO/yyPQuA72brb1wcttv0dnC4mB4SilrNLLpvRdnhl7HT2n2P5aH3bPG4HU77ZBVKa0fZ93DyzDsdBS22k29rcdgSyYGfdk9/vbc/43BaNxLL0PQ1UMNQOft1zuMzkzSH9/enj11q9X6YRt4n1fDmo1lxjkA2/vfVy8AnyFvl9z3o1mZ/aPWcHL2eQtUIvvvNN09F2kxqYvnx9r537c/zO9P/gxm/i7Vzo85qfuDssZgNBls/nezP9IZTTqlf1P0V/xI0a/P3ESyViu5Xc3D6dXk707L8XFZZzDq7Lby6xX97k3JYU6WZdlgND6pV7v9v42VhwEPl9XK5Yq/2/E4c/U+AoBDEOi/QmMw2SIT8/vDPNt8L86ZPyiYqr0kV/Vk+i0+C4E1fnpIJ+8PPdvn0ztrXH23SSMHt2UvFs/HX5TAaivOYOTtSvPzl2ZG0a9XL3c4vwLAz2eKCwe35zWX2X+nK+5q/vA0nl702b54OpupmPz+JrXOTB34LbLObS9dVusLXwFQFEXern/PGf4AUEagE0bjb6+2/HXyjcGw9disViqVi/uz29mZvLv1edYZbTMtf919Ib/4Qr8t1+Ane/8KgJm9VL24uN/iCwBW7dmSL33a+DMHfTVkndHBrhgB4GeoTCaTr14GeJW3K8003OqCuqJfr96dmxcAAPw0Ap1Y8nale7I5u+U5APBTCXQAAAjEHHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdIivyfr+fF9/kYQGAA6hMJpOvXgZgjaJfr96dj0ed7Ds8LADwUUbQIbjsz3nt4fI6/x4PCwB8lECH6LI/57V0c3+MQj/CwwIAHyTQIbysc9U6RqEf52EDKfr1dtlMe1PwAQhNoMM30Dg7Skof6WGDyNvVy4eb+/Hy32SNzp/Urdb7Gh2AiAQ6fAcKfVd5u5tatbRq9UzBByAugQ7fQZFSeWvm7com7dUVuvJhv7mi374/Gw3+ntdSenwuHSc3BR+AsAQ6hFfk7ev0d9hKN92lSRmNwWSTQWP3h/3Wiv7F09mgkVL232lKD3f/ygv9x0/BB+C7EugQW9FvXz//HTSyxllrZWyGedgA8vZ1un05KGmctVJ6eCqZhv76twodgHgEOgRW9OsXT2eD6ZcJNf72aodJ6TUPm7frlUqlUn73k28gb3dP/r5/+VL1ZPU0dIUOQFACHaIq+vWLu/Pb9xkq2Z/zAxT6uofN2910NZ5Mxlepe/H95r1Mp57Pfjdq9mfNNPQfOwUfgG9OoENMebt6eXo1V5uHKPS1D5vfP57/bWQpZY2/52nVzJCo3qaez1o9Df3HTsH/+YqiWPg/AD+MQIeYGoOSyzuzzmhy+ycr/YGPP2zx/Dj7p6vGnWOanXo+q3wa+s+dgv8LFP8uqtN5WP/SR34XDiJvf9Pb6efttTd4WvMDRb9e2X2ld36+D/wU/AQCHb6Z7DhNcqSH/SR5+3526vms5WnoR5rZz6c5H04mk8loUL7HP1N+/3j+oSPm41h999Vta3enMi769ZV3ed2Y8kW//frT3/bSFzgCgQ58c0W/fn+2MtYWpqEfaWY/v1J+n66+/ihh2czdV4etlFrDjTdd/ZCsM1p5l9fR2u2TtyvVy3Q1nkwmk8n4KjV9vy+8EOjAi+y/09n/PP0vYHksK/oXlw83zdVf1FS9fHibhn6kmf1BFf36z5wf8NStv464bv9DryO1ByzA/D6dHSN4D6h4fvyk2Wp5e3bbzv/XCkW/e1PrjQeN6e9j1hgMWw+X6y5P/7EvaVgi0IFXjbPTu+u8SKnIr+/SSfWrl2cr60bvlgbyjjSzP6Sif3F5Ojz4iGmRv85IOOSEhKLI20vpNftU89F2fjuZTMbD05vm9rWWdQajYSvVDjYlpeh34/f5v7v3w9O5mS/Nm3U/l9/fHOYGR29PWfJ8xb+7h4XdsWnGWda57T3usNPh+xLocDzF+oDJ82ifM43BVepWK5VqN13dfuKp+6/fUJ81Bf/z1jS/vky9vwfuxyLv/0t/R5PXPF6ekLDzCk7nL19cdB8fFv5pu9p8PB9P5z6c3L09VX59Ob2YOWuctXZc/OfHw50YKv49nUbv8/z68qHW67UeLq/zNP+9w8N12y6/v6n1erWlGxzdNF9PSS2rntQWrsY+/S97f8rl5yvp8+lpvJVfLZbS9BuA3XiJ30Cgw/Fk1X/tFaOMRd5uP1fjfbw3BqPp9XeNzxxR/oYbak+ftaZFv3tzuLHiV/l18/LyflpPWfn9cXZewekZkNHo6nT+H/e7N7Xey1Fi1ujc9tI0MlM66b0fPLZ2SuTx00PtUCeGin93scfPi7xdb960hqNOZzBs3TS3ng9U9OvNx95tp3PbSwvzTVrDyWQy7tWOssBT1ZPahik5jbPXAw74yQQ6TK2+78Hud0B4k3UGf9N1e2mUsd++Tn8D3INiZ0fZSinihvrea1o6OLlZ3q5vv1YLd+V8daAVHD89zA12Z/+dvky5aPz3dN0vUkpFf8cp4Pn94Q5ain93nz5+XvTrW06hL/J2vdq8OR2Op1OcGoPx8PSmWan3N8xKKvJ2vXp5Ohx1spSyzmh4elnd+ENTc5ewFM+PqXZSXT/FZV++AZhfQaDzG0w/2F7Do+iXVcjs2d9VyufzFnm7/nrN2vKHZ9YYDP78a789X5G32//+DD53hPpg9t9K6ZttqDhrms9e21jk/W0Cbfy0ss/XL9t6jcHbWhf59eVDqpVOojnArnwLvDnTkdXG4OzpolKpXKS/O82wn5ng8nLB6PQ9IW9XKpV6P5+541/95Ybf7VUXoxb/7s5L5w+9/8yHZmHss9Nnl677eNobT2a2eNYYTMa907v78bpHyq+7j6fDmRd2YzAent5197+Ees0Ul3KLR2ZlNo+yww+w+TMIvrlhrzeeTIatt5uNDVsp1Xrjgzz4uFdLqTUcv//fVf+u1eqNx73W9N/+Pr9nQx12TYe93vShhq1aSrXttsq4Vyt/2m2XbZ3X0tq4LLvtyvnbAS7/jn78t/b1LWDYqtVaw/H0fybjXm84GfdqqVarva7SsJVqrdbcf84/87hXvijD9x+aDHu9Pbbu24/uvAtlgRMAACAASURBVNN3fY7Wjrv/7QfGvdr89tgw52X6LCXPt/RAy3+2Yil3Xnj4fgQ6P92413vJkbm3/aV3920GeEp/6O1hNxXESxCst+0406d7/5Td7l8edUMddSuFWtNZ4/F4y1BbkzVbL9vGpRm2NpfjDiu4TaB/KMqGrVTrDYetWmv2caeH7wtHK8v/ubgsq/r87afK4nMf2+/04Mpek8sbaXG/r3glrzwChZ9DoPPDjYfD5T4f93qHGEDfYQxyPGy1piHwfUeG9/d7NtTx1nSnTivNmr2HzFcu0voH3HEFjz2CPh3mXTymeHl/WBgjX/7PudV8WbHy56i1hgdL6g/G+caDzJU7b+N1oLvvifLUHrbeTum8POvyXhfo/E7moPPDZY1GNr3l3MyU3PFTOsClYsW/u4et7iIxc33ciivofrbfs6GOtKZFURTZLjeCrJ4s99XWy7ZGkefF+3Jm/52mtOKOdx/dlWVr8CHFv7uHWm94dXJ/MTv3/uX9Yf7q0fz+ZnYadH5/M7fd8vvHk/L3j6wzGt+ePV9fbHsx57oF3nWnL1t7HcXael/75QKr6z1v73rldGMwGvdSt1qpVCqV6t3pcLz+m0dfjJ9K7/QIP4lA5zconh/nP39XfL7uZvz0UHId2+JTL10flzUGg/++XXp+xO/ZUMdY02mnvf7bPN/mjhrZf6dLF9Fts2zr7+JS9C+azerm+9sdYleW3w77A/cwn14222h0Brfnjy83DyxeNubC7dGL58fZI5nXPi+K6cFJfp+uyiJyeilnljU6g9FoMjz9yJ0A99npwZV+R1hK0y+Qekn/be/uWn4JMfwsAp3fYG68pegfps/LBvnyfn/2Q7not6+fy24t93qXi+//sbuN37OhDr6mebterVZfv7KzyNv3aauEqZ7UFvN287JtoVbrvZfr9D6LC9G8765cvGnj4o068vubj4z/LzT46X9ZSsW/55Sll8H199xb+M+3Pv/3b5yllPIV93bMr5uXa74Cc4fB5ZU7ffvbLP5w29zpBb69Q86XgaCmExlfb4twsLmLs5c4jcfDw0xs/8jyDHsvd38I5pM31Bduh8Ou6dvNPHqt6fzp7R9twz0z9ly2ca/V6r1NGG6lg9wNaWmuxctjTiedv9/N5KMT0N/WfTp/eTx83QBrJ6C/XL0yfn1FlVxf/voP3zfNcGl2/vaTptfs9JI52vvb/0Yoq69/PfzNVUof0T1c+BUEOr/DsDUdPjzwHcvGR3rcvR3q3hGH9tkb6uu2Q5SXROkt7A6xbC/h+BlrOB72aq8L/LGdOR/drzcvfHmW+XZeTOnpjOuXPxn31h3fv22aWmvhADHgRY3HCvS1dn7CsqXU5/wOlclk8oHxdyCWol+vXs591cjvZDukvF1ppl+9BQ6vyPPU2P2rs4p+/SLdbnX5IxsU/Xr17ny7a0nhOxPo8LMo0ynbIaW8XemeSBl+DnnO7yHQ4acxcjplOwDwTQl0+HGU6ZTtAMD3JNDh51GmU7YDAN+S+6DDj1OklNLN/f5fk/JD2A4AfE8CHX6WIm9fp7/D1qrvYP8tbAcAvi2BDj/Iy9c4NrLGWSs9rPlewx/OdgDgOxPo8FMU/frF09nLl6w3/vZq72Wat+uVSqVSX/lF6z+J7QDANyfQ4Uco+vWLu/Pb9+shsz/nr2Wat7vpajyZjK9S9+KHz/ewHQD4/gQ6/AB5u3p5ejX/7R1vZZrfP57/bWQpZY2/5+lp/GVLeXy2AwA/wf++egGAj2sMSu6XmnVGkz9FKv49zv7p43ORdv+u8m/CdgDgJzCCDj9ZJkFTSrYDAN+KQAcAgEAEOvxw2X+ns/95+t8vHUy2HQD4LgQ6/HSNs9O767xIqciv79JJ9auX56vYDgB8EwIdfrzG4Cp1q5VKtZuubju/d+DYdgDge6hMSm56AAAAfA0j6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHov0zerlTa+eKfFv16pd4vPufJjuITn2pvR1nG77Die4qzvfZbkmP8Vu23JLFeJB9Zmp1+9n0HxNgAOy7FzOtnr+U/wutvz+14jM2/9yZZ/VMH/nCM8aLjOxPo7CtvV0ocofM/qOjXyxb0Tfl7aPnabfqpA1uzEJuef9Pyf+In94q/W7WE+y/Z3CPW+8Xif6/72SLvt19fJ/V2vnkRVm/gz/4VWPECD/CbuGdE7bYjUkpFvvOP7L98m5ZldvGPvQuKvF1/2/n1dn+HdV9r9w2zx147wpJ86mfSqncAUc6hCPTvZvFdod4vlj+gZ9+R5v+2eZPSTfMg7yaNwWTBsJXS6X/ZNquwW8yteCvc/o23NVxc1neDxnZrN7+eS1YfB+z/+TCzEONeLdV64w1Lvd3yj3u1lT+36XDmsJ92Zftl1Nn4CtrmEV8eZvG/y+XtavMuXY0nk8lkPDx/bFY3rubqfbP3Cuz5Ms86o132cGh5u1K9fNkRk/FV2mJHpLxdbT6eD8dv++7rCqno1+cW/3Lz4pf9wm23Anm7Xm0+nr8822R8le622VxHsM9eO4rld731vwkf/nAsewPb9NYM2xLo39Hsu8JLDcy223wilHx8H+fdpOh3b1Lr7BjvTiW1GS5ByrdzuMXcZO3L5dutzXbydvOm1rsdNLKUUsoandGw9XB5sXVjjJ8eDrIcK17mWxzz7q3o1zdmyDb/5lBL072p9cYvOyJljcHmHTH9mdtOI0spZY3Oba920/2aPCz6F5cPreHM4o97adPraPEXrvTov0Tebt6k3njUeXm2lDUGo2Hr4fL6sw9P9tlrQXzahyPsQ6D/GvNnQw96GjKllFJ+fflQ6/39rLe08dPDUcvlpzvCtpsbfFoYmPpi7yNlJQuT39+k1tXcsHfjrJUe7v5t9ytSPD+m7f/1bsZPD7WT6hEeOKU0LcrT4aYMyTq3vcfmJyR68e/uoXb+Z25H/O3V1m/axTeC7M957eFpfLylXKn4d7f4Dpj9Od+w+Hs/2fNjWthWafq6vbn/8J7K72/S1o+z117bVvH8OLMks6eYSt9Vls9BVS+3OXg+9ocj7EWg/w5Ff+Fs6FZn8XeQt5vTytn4Hjr10ZjL73carV/1dJVKiLm6Wxg/PaRDdcehRnwXrJpHtO2Y4BG9j5QtL0zx/JiWIrhx1tp2c+fXlw+12nE6LL+/OeJhaH59mbY6pM46V609hqWL58eUHp+3/bGS0ksp++907Y4o3Xs7POkBlY0ZfN3hwv6KfvemNRxuucf32mvbmv5updclmT3FtPJdZfltaMOcs6N/OMKeBPqvkF9fPrSGs2dDOwc8G1rk7UpzepJzy/fQj8bc9KTqlqP1G05jfnDO8xYOUVj5/U3aflDrA9bOQd9uOGoHCwdOXzJ5ePW5mLelW3PY+DI9ZnS7eTLDzrZ8mZfssm12VNHv3iyPwa7QONv97aL4d/eQPtxp1ZPabr2d/XeaHi6r275c1x277/R6LD9USOk4hwvZf6clZ23y+5sVy7C1vH1xdz4eNBqD8fndxb5jyTvvtTIvs5dGw1a6rB5tVPu4H47wAQL9Nyj96Fh8C51+pu188X7erlebN7Xe+Oid+y6/vnxYmJNwMBsvkqzMXUxUMtAyd53r4mD1aw7sOECT39+kWq32GYWeFi9o2Pp4Zo+zIgvHaYPGhtkom70vxHQfzCzUzoNib0u36rCx6NebN7XebSdLWee2t801gdubzmje8qRUyS7bNG5YNvK52u6TJ4p/dw+t3ooZ4W+75fDHZMXz48vm2HjJxLorqV9fjwe29Aaw+IYzv4df3pVLdntjMGyly2r97c4tRd5+ezXuqejX69109fLKyTqjq9S9qB/s3jC7LUverl6eDkedLDUGo3HvsVndbklWvA2t+s084odjOurrnF9AoH9Hc29B9f44vb+DlL4dlJ5wXBw4fP2I3/ZDaXpfumrz8XQ4Pv4o9Mzz9uvNm9bGibPbpfbyG/im8fYPDr+/Nt9OPze9/Pbq9qqVNp52/vgBxl4OlzrrZqPstBCDxsJCrdjmKwf71g9FFnm7Xr1M70emWWc07qXL6mFmsObt6vSCw61PSu1o/LTU53m7XqnU2/nbPfPqM+8ju46JTufPdDpXpYORb8c+G18YGy42OdRkio8rX5LFxS99A1g8vHrfKC9/U7rbG4PReHh6131556920/lw/3GSIm/XL57Ob0eze6QxGN2eP3V3PzX0sUuEirxfrzYfp+dkU0rTX67h6d2mJVnzNrRqwxzlw/HN9q9zWCbQv5ult6BRp7HclAtvB42/vdpNc3awZTr0t/8lnUV+3b2btvnr1fvly7rijWnPOehF3q5eppk37jWOnNqfpuhfTC+/zRp/e7VNp15L13rxHo3fYK2PZfk1WfoJvXHyd/Gv+3i6eN5o2uiP9x/sxdex0K1e5vs+x/PjwgoW/eez0WR4etOsXDyd3Y6HrVpK6a2HdivhvN28mZ7kagy2nc1cekXl6okjL6on8yeWtjgzsN+h+0ZlhzAbF/9jssZg9Pb7Php0Vr4Vb/lQg+W3g6wzGK17l9hvr61V/OvenS4da2SNwWjtkmwh64w+4cMRDkSgf3tbfZPD6wDE22BLyRvgTqbvloNGtsfXAM0fYwxbizMdVmTJ27DKp0Tluu+P2/7LMz7++fyS59Pz1lnndvphctxzzgunY9bt0iO1zsfs+CVTjbOlMxObr0HOOqU5M/3zD3y0T1/lN+nYL/OlC4WLf+lP42V+yO2gkU2Dbab4qifb3mNz4SRXYzA8vdzm5uQlrZdfX27I7awzPbGUFymlIn+dF7T2eY5z6J79OV88ft5xHlF4ZUMue+21taa/Qxt+evXoz65v3Qf/cIQDEei/xvxgy+Y3wB2sm7N8kEHAIu+369Xm/m+cRd5v1+tzLVmvt/t5ceRezDqjjwxSF/16dXoF0+tDZJ3Ry9TTIy35QrwsHz7N79Ly1in7qdLWWXEi5YMTNnf9kqmXGze/TE2ZjqBtM4kqpYN+GeXLq/wytb6kD/78yUonvuxo+l0986P/jcGwddPcPPcn61zNXg84M8V/ncZgPDy9a1Yrlcr0PeKrphMsHD+/nO77wJzwr7Dp6Hb51b7fXttWMX3vPu5b994fjsd5A4Mpgf57rBtYiK34171L58PxnkcVebtebd6lq9vbmVAb396ePXWroW+nVfy7S63h0inZwWjYSse57fZnWpPRn15YjcF4eJ6mY2jV7tP5l0Relp4eT3v7vcxXnvRYlQpL4+FZlqWU36++sct2N+ecvmaXji8ag/Hw9PF+vOlF2xiMxr2XHVGpbntEnjUGr3m1y8Y7/Dviy2Dsy+J3tz0PUrL3vux9ae3VJCsugdhvr20hb9er1e7T2e3tzBDQ21v3ATN4n5dCpDcwfqb/ffUCEEHWGU06+//4w2W1cln+V8t9uYesMxrt/cNFv1s2YSDLsmwwGqZK8zrvrFjENeuV5j6p8vbM5PlarVZL3Xq9O32Mh4eUUqr1xqP/dl30levdGIx8Aqw2tztKlFVG1ugMGp3BIRdj59+qPXfrXr+92X+n6e65SHM5m9/fpNNheVpNvxln42ytla/ZbNu1yzqD0WF3xKfKGoPRZIfFX733iv6KH5meWHv9r1qtZOrRw+nV5O/2C/Fxx9hra9+6xyf1arf/t1F+JLD1W/dmH/xwhP0J9G9k/n15TrOyHCSfd+vDLZ8p7PKvsmoJ8nalOfcHjcFki8/k2Kc9v93eWe8gR4Y/WfVk+g06M/uweH5MrasVW2389JBOrwLv8d9jy2Qsno+/KFFt/db9qV6nf4V+5yQQU1y+ke9+W5KvWf6XGZL19vysxaJ4vVeGq/VTSt//1cVusv9OF29sPn56WHlF845f3Qsf9vrdAu28mH3vnr51f8Pp/bAjgf67rL0/x95T+tY+6tdP8m4MRuPheepeXMwsVvXi4v7karx2MGPVeu31DTp8qnVfEHno1+S65/r6l/8qjb8LXyJUpNRaNQH9W/b5NpdoH+cd8SA+eIX5T5B1RuPx1cn9xcXMXjrWW/fxXwpZZ2Rogx1UJpPJVy8DAJ8ub1eaaYu5QEW/Xr07d2Ye4PMIdIBfKm9XuicbylueA3w+gQ4AAIGYgw4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKAD28jblUo7/5nPFl3ejrstIi8bwLcl0IFpEC+r94uvXrAFRb9etqBvVsZi+Qpu8YNfrui3n/8OGl+9GKs0Bn+f29u8TvJ2wNcTQFACHUipMZgsGLZSOv0v2+Jn1412l//dilrest9aw8VlfbcyZJdXcH5Voyr6F09nnW12w5fJOmdP16W7Lm/P7PzGYHx+dxEj0Ysiz/MQSwJQTqDDL1X066vHjYt+9ya1zo40bltSy+Ne7TjPtYe1W+ZzFf/uTg+wF4oiby+tU5H369PzEfVNQ+BF3n45c1Fvl4Rt4yzdXc8/eN6uVCrNm7k/yzpXp5fXx9+wRZ7nxdtSFsVCixd5+6La7D4ffTn2tWH5gV9BoMOvVPQvLk+Hqwac8+vLh1rv7yfOqxg/PWw5YH98Wee299iMkOj59eUH+3w6J+jiovv4sPDQ7Wrz7vxqPJlMxlfpsrr69EWR9/+lv6PJZDIZD09vmiX/tHF2+ng/s73ydvOxN14+NVE9qd3cH3+7Pneb1erreZnqxXN17nWVNQZXgc+ZpE3LD/wKAh1+o/z6Mq0M8LzdvEmtq042OxVlYTR0wU2zfGr3+p+aecr77QfsVz3XDrNkNsk6V62b7pdPxyieH2sn1Q89RNYZTSaT0ejqdP6R+92bWu+208hSSlljMGw9rBrbzq+bl5f34+mjNc5aKT08jRf/UfUkzZZ3YzAZlc3Lyf6c1x6fP2+z1mqt4bh0Sb6H7778wP4EOvw+Rb97Uzv/U/a5X+TtSvOm1hsPGvNTUdZP1F41L3y76d3TXNxmwH7am6sdLGYaZ6uT9dOMnx6Oc1ah+Hc3f8KielJL24xtF8+PpX+e/XeaPrO8Nzh/eTmORoPGVttvdg7P8nFZ0X/723q732/X60e+3nXn5Qd+HIEOv07x7+6hrM+LvF2vNm9qvU8etMuvLx9aV8d5yk23fXkd5n8Zln/vrsZZa6tkPaIDDKDvpLywG4O3i2+L/PryIZUeSlVPdr6GYJtds++Zkef+2knzC/J2tZmuxpPJZDK5PblbmMOTty9eZvhMJqPbk7vLdDVaOBLM2/VKpd7O31K+/sEJUrstP/ADCXT4dcZPi31e5P12vVJtPp4Ox4cbhd5K0a83b1orZ8O//6utY26u5zYNua8ega+e1CINCn+t6WSnavPxgFMudtk1Oz7n3d3T2e1k8jppfn0tF/3uTWv4OlSddUbD08uZu83k9zcz5xrKThUU/eez0WR4etOsXDyd3Y6HrVpK6SOvnJ2WH/iRBDr8NsXz4/z1mEV+3b2btvnqM+qNwZqbGO47B73I29XLNJ1Ps9b+nb237L/TstnW5eux/fHDB2Jr073ct3/07M/5/NHH+OlhzT9/m+w0vkrd64+M6B5t0s6s7M/t7csLOWsMhq209nKC4t/dw/zlD42z1rY7fvoA6U8jFc+Pqda7HTSyrDGYnZqy+17bbfmBn0mgw2+zFGNZYzAajQaNbL+vAZq/aeKwtTgjfUV9F3m/Xm0+ftJ8mqK/et7wihu57zBrY4fjhx2+cij773QuFNfdy33HR886V62H13HiIm/fP261rlnj7/lj6YjupsKfyu9vjnbvzhlZNvOKqp7U1h5ojZ8eFicSVU9mLmWd+4/lo9uU0p8/WdlpqRd77LWdlh/4mQQ6MKvWGx8iLtcq8n67Xm3ene41X6LI++16fe5Qol5v92duHf1TzLfhYTUG4+HpXbVSqVQu7s/+Xp2u+l6qYvam3Cn77zStGNHdODRe9LuPx793Z96uVOr9hUOID2zGrDO6ev0ipqJ/sXz3oyzLUsrvV112vatDLz/wPQl0+G32uJ7vsIp/3bt0Phzvc4uKvF2vNu/S1e3tzIHD+Pb27KlbXXMv731sNyh8TItD6Ad+9MZgOu4/GjTS8+P7bS7zdv3tlELRv2g2qxtvZ1M+NN4YzBzT5e3q3fntzPHYcS4SfbnPzMK1tWsOHqontcWNPLfni369eXNzWa1UKpXq3enwtuyQMr+/OdBt/HdefuBnEujw26y/Jd7DZXVVJR3qWrWsMxoNOvvcP67od29SbzwaNGYnAaQsyxqD0Zp7eU+tWrXyifLF82P61JuolGictR4PcieZpdsjTqf1vL4Iludhz6jVeu9/NX2gxV7M7x83Tl1Zujf6cS4Szf6ct4Yz/7z4d/ew9hb72Z/zhW9PWhwNP231xi+nlVYcUxazxzcfs/PyAz+TQIdfp2TM8N2aKS4LM1zKR0Bn7lm47yDosaxatfKbtYf4btPG3/MPFvrL/VcuH153y+x+eFm7/PrpfOZC3cZg9Lazs87t+enT80vKF/3S+yzm94/nn/m1s2tlnbP713sTFnn/4vJh6R5BxXNK6e03IOtctW6a7bdVrDcfe7PD5H/Ozv4bp2Iqz/v9/tJlsiXz2I+5/MBvsPUIBvBTLF/IOTXu1dbOQf88q5ZwMmzVUqq1huPZpRyPp7e2W7Ps61at9MlWLsFnG/daR9kl4+GL3vzGXLEML9Oiaq3h4j8+1gJ+wNvy1lq9xeUd995meL3v35dbI05/YvYHhq3lV82wtfBSGg9bh90E65Yf+B0EOvxCK3J1pl3KfVq9r8vj8bDXqtXmlrRWa23IzE2rtvhkYfp8MplMhq0wi7Lk0G0ay7hXS6k2G8njYa9V+8mrDMRQmUwmO424Az9B3q400/Bg92X5YYp+vXp3/slfqLpOURTzN98LIupyHU6R9y+6dw8PL5eN1lq9q797XT8BsAuBDr9U3q50TwI1aBzh8hyAX0agAwBAIO7iAgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIJD/ffUCsK1KpfLViwAfNZlMvnoRACC6is9LAACIwxQXAAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEI9B+g6Lf7xVcvxPeRtyuv6q/brcjb9Xq93s4/ZxG2f7qdFmz/tSiK4uUR+u1tH6Hof2ybvT4nALBAoH87Rd6u1yuzWZR1/qaL75LoRd5v11/7uN7O91rs98beIw8bg8mrUSdNKzFrDEZXpw87PU7Rry+F/sqlnV/VVU9X9OuVer3dzzf+y1Tkr5vx/ZG3XouZRZ+qVquVer9IWaMzWPkI06J+bfh+6gxGV6fppLrH880+55KZI6h56zczAPwYAv2bKfJ/6e/V6cKfZn/O764PPfpbFHl7fny0LApLlvDlH9VLxvWL/kXz6ez2pY9vr0661X2qqzGYjHu1Wm88GTR2+bnl9FtZiZtlndF76GdrBoQbg3EvPTw+b/OQt8PTh8e0sXnz9kU3XY0nk8lkfJW6Fzsep7wv+rBVaw3fV2L5eZa2VWp0BrfnKf23/K/Xrdd0dy0qe87ZI6gZ415tp3UEgO9LoH8zWaPTKGma7M/5Y/dw44t5u1KpXFx0bx7m/rDafI3C89SslkVh0a9f3J+NJpPJeHj6eLlY38W/u9T7+7YCWaNz1Xp4Gh9qsTcqT7/SSlyjdDx4bepn/522rrZ6liylzf+y6Hcfz28H0+2YNQa3++78ot99PD2rprl1at68/4PG34Ww3nVbHc746eF0l4MCAPi+BPoPkf13esDSbQwmk8no9nxmzLLod29qr3Gddf72ajf3S4Ve/Lt7eGn6rPH3vJYWlin7c54ur/vF+8zv7k1tmzkSB/R+GuBlkP91lHg2TNeaGTof92qp1uoNx2vzNW83H7dby7zdfXxs1tt5saKYU0rLrbrnzi/6F3enp6lZrfeLmXUatnZ+pP3sOgn9s18pAPBVAPxqhAAAF6pJREFUBPpPUT2pPT4fcYru+GlpZvJyoWed0eRt1sn46aHW+9tY/Afjk6eL6rQ8L7rpanyUMdnpRP2ZCn/7i/5F9+TqdUj49uSu2k6DvcK0yPv1+kW6Gp6nu2a1Um/nK3ozbzcfW6d31Y0T7vN2vXtyOxoNTx+b1Yunq5XFvLivi+fHneO1yNvVy9OrwWAw7qXLvef5bCv77zRdVj8wvSi/fzz/kxWuLAXgNxDoP8XGUdTyiRlbX4BXPdlpCnCRt+/T8LYkvrPO4HWwdjQalM3X+bj8upnOX2e6X6W7A19CW+Tter3afbq6HXUajc5gNB620k2zWjKfvujXm4+928FgNDy9aa6O9KJfr3fT1aiTpdQYjIath5vmyonlWefq9PKiP32oIu9fXKbzP7tsyCJvV5tpOB400vSgqVd7uHzfSNvs6ZvmTmcdUuNtry9ML3ofSF/7Cm3ePFxWK9VqtepiUQB+PIH+a8xMYthnInb257z2cHn9EoX9i8uVNwvJ25VKpdq8eXx8Hm8bUgceGW38Haa7i/e0e/+brHN79dR9Hcq9eDofD9KOU1zydrWbrm4nM0cXWWMwmox7rfT0b3Y1in69enc6nG7axmA8bD3cNMsOFor+xd357ej9itfGYNxbd0akMRi/rka1+3S+42mI/LqbhuOZg6OsMxq+XQzQGIy2uPR2emnpprMOG44KX8bRX5p7wys0wkR4APgUAv0HOe4c3awzGvfSNAov0lWvtur5Xq7EHJ+ny+mVpDtV2iFML2d9HUFfuP1HNjOWOxp0srcrR4et7TZgY/DW5kXerr/NoMk6g9FgJh2L/sXd+XgmdrPGYMWtSLLOaDE65/6oZMHeV2PuSbfSGLytwNuuad68DIpXKqtvXlkURd7vt+vV1YdnC0u5T3NPb0vZfz/XUPTr0z/ZbTUB4LsS6D9F8fx49JtcvM1OGXXS00N6eb6iX39JuqJff8+orHPVms5T/+yR0fz+pjV8Hx8umT3/YuZ60Xq9nf7u/PxZ4+95elz1l8vVXfpnB1mw4rWdu1tPOnlZnqW9MDcqnv13PjN3/OLi4j6ls9vj3vKwMRgPTx/u3m9LOT02fHg64nMCQCQC/Yco/t1t9ZUxH3iGfv1tiLvI72+WLgBNafz08JBWZtT0bimfMH+4elJ7vM9fl7S9aupK3q6+Xy+69y3ZF5XM1ZkOUy8/+KrIXb9gpecj6hcXF9f3KZ3dnu90qWvZdwLNb6/GbMKPRqNBp/Q+n1uZP+5Yc8lsVj2pzR9uZv8t3vsfAH6w7YY2iWJuePP1K2Ymr1/bcyiLI6St4WQyGbZqtVav12vVamnVkw17b/ccHPdqafHfDVuHWcz3rfC+CeaXv/WyArVWbzhdmcV/OWwt/NHSH5Q87JYDx0srucuK77Fg+/7jfV84417tdQ761j897tVS7e2GlONhq7ZmQUu39C7rBQDfmRH0b2buq3bepjcX/+5Ot/sinO0sznwYNFJKjcFo9Pe///77eztaORml0Rn8eb6uVyqVSvXutLd48WL1ZPlH9rk89H0rlF/O+H6nmNGg8zIGvPgvG2etx+7bROcib3cfW2frL47cf67OLiu+x4Id1JFuZTh+emhdvY2+Z43BVavkTvrvFnL80+7ODgBfT6D/AEX/Ot3u9p33+8oajUa24XYvbxPVSy5e/O/04UN3wz6kxmDmhi7Vbro64jbMdlnxT16wxfuTV6vV6srLRPfXOGvdbH3ckf13+n7JasnEGwD40SqTyeSrlwH4DYq8ffFy08tarXV1e6S74APAdyfQAQAgEFNcAAAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAIRKADAEAgAh0AAAIR6AAAEIhABwCAQAQ6AAAEItABACAQgQ4AAIEIdAAACESgAwBAIAIdAAACEegAABCIQAcAgEAEOgAABCLQAQAgEIEOAACBCHQAAAhEoAMAQCACHQAAAhHoAAAQiEAHAIBABDoAAAQi0AEAIBCBDgAAgQh0AAAI5P8BFoYGHlYOY+oAAAAASUVORK5CYII="></details>
-<div class="tablewrap"><table><thead><tr><th>초신성</th><th><i>zcmb</i></th><th><i>mb</i></th><th><i>v</i> (km/s)</th><th><i>r</i> (Mpc)</th><th>확인</th></tr></thead><tbody id="calcRows"></tbody></table></div><div class="controls"><button class="primary" id="checkCalc">계산 확인</button><button id="fillCalc">답 채우기</button><span id="calcMsg"></span></div></section>
+<!-- STEP 0 -->
+<section class="stage" data-step="0">
+<span class="tag">1차시 · STEP 0</span>
+<h2>점 3개로 AI의 학습과 예측 체험하기</h2>
+<p class="lead">AI가 예측을 하려면 먼저 데이터를 잘 설명하는 모델을 찾아야 합니다. 세 점 (1, 1), (2, 3), (3, 7)을 가장 잘 설명하는 직선 <i>y</i> = <i>ax</i>를 찾아봅시다.</p>
+<div class="uses">
+<div><b>① 요약하기</b><span>여러 자료를 간단한 식 하나로 나타냅니다.</span><em>AI 용어: 모델</em></div>
+<div><b>② 예측하기</b><span>아직 관찰하지 않은 값을 식으로 추측합니다.</span><em>AI 용어: 예측</em></div>
+<div><b>③ 오차 줄이기</b><span>예측과 실제의 차이가 가장 작은 식을 찾습니다.</span><em>AI 용어: 학습</em></div>
+</div>
 
-<section class="stage" data-step="3" hidden><span class="tag">STEP 3</span><h2>(<i>r</i>, <i>v</i>)점을 좌표평면에 찍으세요</h2><p class="lead">가로축은 거리 <i>r</i>(Mpc), 세로축은 후퇴속도 <i>v</i>(km/s)입니다. 목록에서 점을 선택하거나 한 번에 모두 찍을 수 있습니다.</p><div class="plot-layout"><div class="canvasbox"><canvas id="plot"></canvas></div><aside><small>완료한 점</small><div class="counter"><span id="plotted">0</span> / <span id="plotTotal">0</span></div><button class="primary wide" id="plotAll">모든 점 한 번에 찍기</button><div id="pointList"></div><button class="wide" id="resetPlot">다시 찍기</button></aside></div></section>
+<div class="lesson">
+<h3>1. 직선을 움직이며 오차 살펴보기</h3>
+<div class="plot-layout">
+<div class="canvasbox"><canvas id="toyPlot" class="tall"></canvas></div>
+<aside>
+<label class="sliderlabel">기울기 <i>a</i> = <b id="toyAval">1.00</b></label>
+<input id="toyA" type="range" min="0" max="4" step="0.05" value="1">
+<div class="tablewrap small"><table><thead><tr><th><i>x</i></th><th>실제값 <i>y</i></th><th>예측값 <i>ax</i></th><th>오차<br><i>ax</i> − <i>y</i></th><th>오차²</th></tr></thead><tbody id="toyRows"></tbody></table></div>
+<div class="sums"><div><small>오차의 합</small><b id="toySum">–</b></div><div><small>오차제곱합 <i>S</i>(<i>a</i>)</small><b id="toySSE">–</b></div></div>
+</aside>
+</div>
+<div class="qbox"><p><b>Q1.</b> 오차의 합은 6<i>a</i> − 11입니다. 오차의 합이 0이 되는 <i>a</i>의 값을 구해 보세요. (소수 둘째 자리까지)</p>
+<div class="controls"><input id="toyZero" type="number" step="0.01" inputmode="decimal" aria-label="오차의 합이 0이 되는 a"><button class="primary" id="toyZeroCheck">확인</button><button class="teacher-only" id="toyFill">정답 채우기(교사용)</button></div><p class="msg" id="toyZeroMsg"></p></div>
+</div>
 
-<section class="stage" data-step="4" hidden><span class="tag">STEP 4</span><h2>직선 <i>v</i>=<i>ar</i>의 기울기를 조절하세요</h2><p class="lead">슬라이더를 움직이며 오차제곱합 Σ(<i>ar</i>−<i>v</i>)²이 가장 작아지는 값을 찾으세요. 최솟값을 만드는 <i>a</i>와 차이가 5 이내일 때 다음 단계가 열립니다.</p><div class="plot-layout"><div class="canvasbox"><canvas id="linePlot"></canvas></div><aside><label><b>기울기 <i>a</i> = <span id="aval">70.0</span> km/s/Mpc</b></label><input id="slope" type="range" min="30" max="120" step=".1" value="70"><div class="sse"><small>오차제곱합</small><b id="sse">–</b></div><p id="slopeHint">최소가 되는 지점을 찾아보세요.</p></aside></div></section>
+<div class="lesson">
+<h3>2. 손실함수 <i>S</i>(<i>a</i>)가 가장 작은 곳 찾기</h3>
+<p>오차를 그냥 더하면 양수와 음수가 서로 지워집니다. 그래서 오차를 제곱해서 더한 <b>오차제곱합</b>을 씁니다. AI에서는 이렇게 "얼마나 틀렸는지"를 재는 함수를 <b>손실함수</b>라고 합니다.</p>
+<div class="math"><i>S</i>(<i>a</i>) = (<i>a</i> − 1)² + (2<i>a</i> − 3)² + (3<i>a</i> − 7)²</div>
+<div class="plot-layout">
+<div><p><b>Q2.</b> 표를 완성하세요.</p>
+<div class="tablewrap small"><table><thead><tr><th><i>a</i></th><th><i>S</i>(<i>a</i>)</th></tr></thead><tbody id="toyLossRows"></tbody></table></div>
+<div class="controls"><button class="primary" id="toyTableCheck">표 확인</button></div><p class="msg" id="toyTableMsg"></p></div>
+<div class="canvasbox"><canvas id="toyLoss" class="short"></canvas></div>
+</div>
+<div class="qbox"><p><b>Q3.</b> 식을 전개하면 <i>S</i>(<i>a</i>) = 14<i>a</i>² − 56<i>a</i> + 59입니다. 완전제곱식으로 나타내 보세요.</p>
+<p class="square"><i>S</i>(<i>a</i>) = 14(<i>a</i> − <input id="sqA" type="number" step="any" aria-label="꼭짓점의 a 좌표">)² + <input id="sqB" type="number" step="any" aria-label="최솟값"></p>
+<div class="controls"><button class="primary" id="sqCheck">확인</button></div><p class="msg" id="sqMsg"></p></div>
+</div>
 
-<section class="stage" data-step="5" hidden><span class="tag">STEP 5</span><h2>최소제곱법으로 최적의 <i>a</i>를 구합니다</h2><div class="lesson"><h3>1. 최소제곱법의 생각</h3><p>자료점이 한 직선 위에 정확히 놓이지 않을 때, 각 점의 실제 후퇴속도 <i>v</i><sub>i</sub>와 직선이 예측한 값 <i>ar</i><sub>i</sub>의 차이를 <b>편차</b>라고 합니다. 편차를 제곱하여 모두 더한</p><div class="math"><i>S</i>(<i>a</i>) = Σ(<i>ar</i><sub>i</sub> − <i>v</i><sub>i</sub>)²</div><p>가 가장 작아지도록 <i>a</i>를 정하는 방법이 최소제곱법입니다. 제곱하므로 양수와 음수의 편차가 서로 상쇄되지 않고 큰 오차를 더 크게 반영합니다.</p></div>
-<div class="lesson"><h3>2. 벡터의 내적으로 <i>a</i> 구하기</h3><p>거리와 속도 자료를 <b><i>r</i>⃗=(<i>r</i><sub>1</sub>,…,<i>r</i><sub>n</sub>)</b>, <b><i>v</i>⃗=(<i>v</i><sub>1</sub>,…,<i>v</i><sub>n</sub>)</b>이라 두면, <i>a</i><i>r</i>⃗가 <i>v</i>⃗에 가장 가까워야 합니다. 가장 가까운 점에서는 편차 벡터가 <i>r</i>⃗에 수직이므로</p><div class="math">(<i>v</i>⃗ − <i>a</i><i>r</i>⃗)·<i>r</i>⃗ = 0<br><i>a</i> = <span class="frac"><span><i>v</i>⃗·<i>r</i>⃗</span><span><i>r</i>⃗·<i>r</i>⃗</span></span> = <span class="frac"><span>Σ<i>r</i><sub>i</sub><i>v</i><sub>i</sub></span><span>Σ<i>r</i><sub>i</sub>²</span></span></div><div class="calculation"><div>Σ<i>r</i><sub>i</sub><i>v</i><sub>i</sub><b id="dotRV">–</b></div><div>Σ<i>r</i><sub>i</sub>²<b id="dotRR">–</b></div><div>최소가 되는 <i>a</i><b id="bestA">–</b></div></div></div>
-<div class="lesson interpretation"><h3>3. 상수 <i>a</i> 해석하기</h3><p id="interpret"></p><label>거리 1 Mpc가 증가할 때 후퇴속도는 약 <input id="answerA" type="number" step="0.01"> km/s 증가한다.</label><button class="primary" id="checkA">해석 확인</button><span id="answerMsg"></span></div></section>
-</main><footer><button id="prev" hidden>← 이전</button><span id="toast">표본을 뽑으면 다음 단계가 열립니다.</span><button class="primary" id="next" disabled>다음 →</button></footer><script src="script.js"></script></body></html>
+<div class="lesson">
+<h3>3. 학습한 모델로 예측하기</h3>
+<div class="qbox"><p><b>Q4.</b> 학습으로 찾은 모델로 <i>x</i> = 4일 때의 <i>y</i>를 예측해 보세요.</p>
+<div class="controls"><input id="toyPred" type="number" step="any" aria-label="x가 4일 때 예측값"><button class="primary" id="toyPredCheck">확인</button></div><p class="msg" id="toyPredMsg"></p></div>
+<div class="terms" id="toyTerms" hidden>
+<h4>방금 한 일을 AI 용어로 바꾸면</h4>
+<table><tbody>
+<tr><td>모델</td><td>자료를 설명하는 식 <i>y</i> = <i>ax</i></td></tr>
+<tr><td>매개변수</td><td>데이터로부터 정해야 하는 값 <i>a</i></td></tr>
+<tr><td>손실함수</td><td>얼마나 틀렸는지 재는 함수 <i>S</i>(<i>a</i>)</td></tr>
+<tr><td>학습</td><td>손실함수가 가장 작아지는 <i>a</i> = 2 찾기</td></tr>
+<tr><td>예측</td><td>학습한 모델로 <i>x</i> = 4일 때 <i>y</i> = 8 계산하기</td></tr>
+</tbody></table>
+<p>다음 차시에는 같은 과정을 실제 초신성 관측 자료로 해 봅니다.</p>
+</div>
+</div>
+</section>
+
+<!-- STEP 1 -->
+<section class="stage" data-step="1" hidden>
+<span class="tag">2차시 · STEP 1</span>
+<h2>탐구할 초신성 표본을 뽑으세요</h2>
+<p class="lead">Ia형 초신성 1,048개의 관측 자료(Pantheon 표본)가 이 파일 안에 들어 있어 휴대폰에서도 바로 쓸 수 있습니다.</p>
+<div class="chips"><details><summary>학습 데이터</summary>모델이 매개변수를 정할 때 쓰는 자료</details><details><summary>검증 데이터</summary>학습에 쓰지 않고 남겨 두었다가 예측 실력을 평가할 때 쓰는 자료</details></div>
+<div class="qbox"><p><b>먼저 예상해 보세요.</b> 지구에서 멀리 있는 초신성일수록 멀어지는 속도(후퇴속도)는 어떻게 될까요?</p>
+<div class="radios" id="guessBox"><label><input type="radio" name="guess" value="inc"> 커진다</label><label><input type="radio" name="guess" value="dec"> 작아진다</label><label><input type="radio" name="guess" value="none"> 관계없다</label></div></div>
+<div class="controls">
+<label>자료 범위<select id="range"><option value="near">가까운 초신성 (z &lt; 0.1)</option><option value="all">전체 초신성</option></select></label>
+<label><span id="countLabel">표본 개수</span><input id="count" type="number" min="20" value="30"></label>
+<button class="primary" id="pick">무작위 표본 뽑기</button>
+</div>
+<p class="note">뽑은 표본의 80%는 <b>학습용</b>, 20%는 <b>검증용</b>으로 자동으로 나뉩니다. 검증용 자료는 학습하는 동안 쓰지 않고 남겨 두었다가 STEP 6에서 모델의 예측 실력을 평가할 때 씁니다.</p>
+<div class="stats" id="sampleStats">
+<div><small>선택한 표본</small><b id="stN">–</b></div>
+<div><small>적색편이 <i>zcmb</i>의 범위 · 평균</small><b id="stZ">–</b></div>
+<div><small>가장 밝은 초신성 (<i>mb</i> 최소)</small><b id="stBright">–</b></div>
+<div><small>가장 큰 <i>zcmb</i></small><b id="stFar">–</b></div>
+</div>
+<div class="tablewrap"><table><thead><tr><th>번호</th><th>Ia형 초신성</th><th><button class="sort" data-key="z">적색편이 <i>zcmb</i> <span>↕</span></button></th><th><button class="sort" data-key="m">겉보기등급 <i>mb</i> <span>↕</span></button></th><th>용도</th></tr></thead><tbody id="sampleRows"><tr><td colspan="5">예상을 고른 뒤 표본을 뽑아 주세요.</td></tr></tbody></table></div>
+</section>
+
+<!-- STEP 2 -->
+<section class="stage" data-step="2" hidden>
+<span class="tag">2차시 · STEP 2</span>
+<h2>후퇴속도 <i>v</i>와 거리 <i>r</i>을 계산하세요</h2>
+<p class="lead">관측값 <i>zcmb</i>와 <i>mb</i>를 AI가 다룰 수 있는 수치(특성)로 바꾸는 단계입니다.</p>
+<div class="formula-grid">
+<div class="formula"><small>후퇴속도</small><i>v</i> = <i>c</i> × <i>zcmb</i><br><span class="note"><i>c</i> = 3 × 10<sup>5</sup> km/s</span></div>
+<div class="formula"><small>거리</small><i>r</i> = 10<sup>(<i>mb</i> − 5.7)/5</sup> (Mpc)<br><span class="note">Ia형 초신성의 절대등급을 −19.3으로 가정한 식</span></div>
+</div>
+<details class="source"><summary>수식 보기: 거리 공식은 어떻게 나왔을까? (심화 · 상용로그)</summary>
+<p>겉보기등급 <i>m</i>, 절대등급 <i>M</i>, 거리 <i>d</i>(pc) 사이에는 <i>m</i> − <i>M</i> = 5 log <i>d</i> − 5가 성립합니다. <i>M</i> = −19.3을 넣으면</p>
+<p class="center"><i>mb</i> + 19.3 = 5 log <i>d</i> − 5 → log <i>d</i> = (<i>mb</i> + 24.3)/5</p>
+<p>1 Mpc = 10<sup>6</sup> pc이므로 log <i>r</i> = (<i>mb</i> + 24.3)/5 − 6 = (<i>mb</i> − 5.7)/5, 즉 <i>r</i> = 10<sup>(<i>mb</i> − 5.7)/5</sup>입니다.</p>
+<p class="note">상용로그는 고등학교 2학년 대수 내용이므로 평가 대상에서 제외합니다.</p>
+</details>
+<details class="source"><summary>유의할 점: <i>v</i> = <i>cz</i>는 어디까지 맞을까?</summary>
+<p><i>v</i> = <i>cz</i>는 적색편이가 작을 때(대략 <i>z</i> &lt; 0.1)만 잘 맞는 근사식입니다. 먼 은하의 적색편이는 우주 공간의 팽창으로 생기기 때문에, <i>z</i>가 큰 자료에 이 식을 그대로 쓰면 속도가 지나치게 크게 계산됩니다. <i>z</i> &gt; 1이면 빛의 속도보다 큰 값이 나오기도 합니다.</p>
+</details>
+<div class="tablewrap"><table><thead><tr><th>초신성</th><th>용도</th><th><i>zcmb</i></th><th><i>mb</i></th><th><i>v</i> (km/s)</th><th><i>r</i> (Mpc)</th><th>확인</th></tr></thead><tbody id="calcRows"></tbody></table></div>
+<div class="controls"><button class="primary" id="checkCalc">계산 확인</button><button id="fillCalc">모두 계산하기</button><span id="calcMsg" class="msg"></span></div>
+</section>
+
+<!-- STEP 3 -->
+<section class="stage" data-step="3" hidden>
+<span class="tag">2차시 · STEP 3</span>
+<h2>점을 찍고 모델을 정하세요</h2>
+<p class="lead">학습용 초신성의 (<i>r</i>, <i>v</i>)를 좌표평면에 찍어 경향을 관찰합니다. 가로축은 거리 <i>r</i>(Mpc), 세로축은 후퇴속도 <i>v</i>(km/s)입니다.</p>
+<div class="chips"><details><summary>모델</summary>자료 사이의 관계를 나타내는 식</details><details><summary>매개변수</summary>모델 안에서 데이터로부터 정해야 하는 값</details></div>
+<div class="plot-layout">
+<div class="canvasbox"><canvas id="plot" class="tall"></canvas></div>
+<aside><small>찍은 점 (학습용)</small><div class="counter"><span id="plotted">0</span> / <span id="plotTotal">0</span></div><button class="primary wide" id="plotAll">모든 점 한 번에 찍기</button><div id="pointList"></div><button class="wide" id="resetPlot">다시 찍기</button></aside>
+</div>
+<div class="lesson" id="modelCard" hidden>
+<h3>관찰하고 모델 정하기</h3>
+<div class="qbox"><p><b>Q1.</b> 점들의 경향으로 알맞은 것은?</p>
+<div class="radios"><label><input type="radio" name="trend" value="inc"> 거리가 멀수록 후퇴속도가 커진다</label><label><input type="radio" name="trend" value="dec"> 거리가 멀수록 후퇴속도가 작아진다</label><label><input type="radio" name="trend" value="none"> 거리와 후퇴속도는 관계없다</label></div>
+<div class="controls"><button class="primary" id="trendCheck">확인</button></div><p class="msg" id="trendMsg"></p></div>
+<div class="qbox"><p><b>Q2.</b> 직선의 식은 보통 <i>y</i> = <i>mx</i> + <i>b</i>로 씁니다. 우리는 절편 <i>b</i>를 빼고 <i>v</i> = <i>ar</i>로 두려고 합니다. 그 이유로 가장 알맞은 것은?</p>
+<div class="radios"><label><input type="radio" name="model" value="origin"> 거리가 0이면 후퇴속도도 0이어야 하므로</label><label><input type="radio" name="model" value="easy"> 절편이 있으면 계산할 수 없으므로</label><label><input type="radio" name="model" value="few"> 자료의 개수가 적으므로</label></div>
+<div class="controls"><button class="primary" id="modelCheck">확인</button></div><p class="msg" id="modelMsg"></p></div>
+</div>
+</section>
+
+<!-- STEP 4 -->
+<section class="stage" data-step="4" hidden>
+<span class="tag">2차시 · STEP 4</span>
+<h2>사람이 학습하기: 손실함수가 가장 작은 <i>a</i> 찾기</h2>
+<p class="lead">모델 <i>v</i> = <i>ar</i>의 기울기 <i>a</i>를 움직이며 손실함수 <i>S</i>(<i>a</i>) = Σ(<i>ar</i><sub>i</sub> − <i>v</i><sub>i</sub>)²이 가장 작아지는 값을 찾아 저장하세요.</p>
+<div class="chips"><details><summary>손실함수</summary>모델의 예측이 실제와 얼마나 다른지 재는 함수. 여기서는 오차제곱합</details></div>
+<div class="plot-layout">
+<div class="canvasbox"><canvas id="linePlot" class="tall"></canvas></div>
+<aside>
+<label class="sliderlabel">기울기 <i>a</i> = <b id="aval">–</b> km/s/Mpc</label>
+<input id="slope" type="range" min="0" max="150" step="0.1" value="20">
+<div class="sse"><small>손실함수 <i>S</i>(<i>a</i>)</small><b id="sse">–</b></div>
+<div class="canvasbox inner"><canvas id="lossPlot" class="short"></canvas></div>
+<button class="primary wide" id="saveGuess">이 값을 내 추정값으로 저장</button>
+<button class="wide teacher-only" id="bestGuess">최솟값으로 이동(교사용)</button>
+<p class="msg" id="guessMsg"></p>
+</aside>
+</div>
+</section>
+
+<!-- STEP 5 -->
+<section class="stage" data-step="5" hidden>
+<span class="tag">2차시 · STEP 5</span>
+<h2>기계가 학습하기: 규칙으로 <i>a</i>를 고쳐 나가기</h2>
+<p class="lead">이번에는 컴퓨터가 정해진 규칙에 따라 <i>a</i>를 스스로 고쳐 나갑니다. 컴퓨터는 그래프 전체를 보지 못하고, 지금 위치 주변의 손실만 계산할 수 있습니다.</p>
+<div class="chips"><details><summary>학습(최적화)</summary>손실함수가 작아지는 방향으로 매개변수를 반복해서 고쳐 나가는 과정</details></div>
+<div class="rule"><b>컴퓨터의 학습 규칙</b><ol><li>시작값 <i>a</i>와 이동 폭 <i>h</i>를 정한다.</li><li><i>S</i>(<i>a</i> − <i>h</i>), <i>S</i>(<i>a</i>), <i>S</i>(<i>a</i> + <i>h</i>)를 계산한다.</li><li>세 값 중 가장 작은 쪽으로 <i>a</i>를 옮긴다.</li><li>지금 자리가 가장 작으면 이동 폭 <i>h</i>를 절반으로 줄인다.</li><li><i>h</i>가 0.01보다 작아지면 멈춘다.</li></ol></div>
+<div class="controls">
+<label>시작값 <i>a</i><input id="gdStart" type="number" step="1" value="20"></label>
+<label>이동 폭 <i>h</i><input id="gdH" type="number" step="1" value="10"></label>
+<button id="gdReset">처음부터</button><button id="gdStep">한 단계 진행</button><button class="primary" id="gdRun">끝까지 진행</button>
+</div>
+<div class="plot-layout">
+<div class="canvasbox"><canvas id="gdPlot" class="tall"></canvas></div>
+<aside>
+<div class="stats one"><div><small>반복 횟수</small><b id="gdIter">0</b></div><div><small>현재 <i>a</i></small><b id="gdA">–</b></div><div><small>이동 폭 <i>h</i></small><b id="gdHval">–</b></div><div><small>현재 <i>S</i>(<i>a</i>)</small><b id="gdS">–</b></div></div>
+<p class="msg" id="gdMsg">‘한 단계 진행’을 눌러 보세요.</p>
+</aside>
+</div>
+<div class="tablewrap log"><table><thead><tr><th>반복</th><th><i>a</i></th><th><i>h</i></th><th><i>S</i>(<i>a</i> − <i>h</i>)</th><th><i>S</i>(<i>a</i>)</th><th><i>S</i>(<i>a</i> + <i>h</i>)</th><th>결정</th></tr></thead><tbody id="gdRows"></tbody></table></div>
+
+<div id="compareCard" hidden>
+<div class="lesson">
+<h3>세 가지 방법으로 구한 <i>a</i> 비교</h3>
+<div class="calculation"><div>내가 찾은 <i>a</i> (STEP 4)<b id="cmpMine">–</b></div><div>기계가 찾은 <i>a</i><b id="cmpGd">–</b></div><div>수학으로 구한 <i>a</i><b id="cmpFormula">–</b></div></div>
+<h4>수학으로 확인하기: 이차함수의 최솟값</h4>
+<p><i>S</i>(<i>a</i>) = Σ(<i>ar</i><sub>i</sub> − <i>v</i><sub>i</sub>)²을 전개하면 <i>a</i>에 대한 이차함수입니다.</p>
+<div class="math"><i>S</i>(<i>a</i>) = (Σ<i>r</i><sub>i</sub>²)<i>a</i>² − 2(Σ<i>r</i><sub>i</sub><i>v</i><sub>i</sub>)<i>a</i> + Σ<i>v</i><sub>i</sub>²<br>→ <i>a</i> = <span class="frac"><span>Σ<i>r</i><sub>i</sub><i>v</i><sub>i</sub></span><span>Σ<i>r</i><sub>i</sub>²</span></span>일 때 최소</div>
+<p>1차시의 14(<i>a</i> − 2)² + 3과 같은 원리입니다. 학습용 자료로 계산하면</p>
+<div class="calculation"><div>Σ<i>r</i><sub>i</sub><i>v</i><sub>i</sub><b id="dotRV">–</b></div><div>Σ<i>r</i><sub>i</sub>²<b id="dotRR">–</b></div><div><i>a</i> = Σ<i>r</i><sub>i</sub><i>v</i><sub>i</sub> ÷ Σ<i>r</i><sub>i</sub>²<b id="bestA">–</b></div></div>
+<details class="source"><summary>심화: 벡터의 내적과 정사영으로 구하기 (고급대수)</summary>
+<p>거리와 속도 자료를 벡터 <b><i>r</i>⃗ = (<i>r</i><sub>1</sub>, …, <i>r</i><sub>n</sub>)</b>, <b><i>v</i>⃗ = (<i>v</i><sub>1</sub>, …, <i>v</i><sub>n</sub>)</b>으로 두면 <i>S</i>(<i>a</i>) = |<i>a</i><i>r</i>⃗ − <i>v</i>⃗|²입니다. <i>a</i><i>r</i>⃗가 <i>v</i>⃗에 가장 가까울 때 오차 벡터는 <i>r</i>⃗에 수직이므로</p>
+<p class="center">(<i>v</i>⃗ − <i>a</i><i>r</i>⃗) · <i>r</i>⃗ = 0 → <i>a</i> = (<i>v</i>⃗ · <i>r</i>⃗) ÷ (<i>r</i>⃗ · <i>r</i>⃗)</p>
+<p class="note">교육과정 범위 밖의 내용이므로 평가 대상에서 제외합니다.</p>
+</details>
+</div>
+<div class="lesson">
+<h3>기울기 <i>a</i> 해석하기</h3>
+<div class="qbox"><p>거리가 1 Mpc 멀어질 때 후퇴속도는 약 몇 km/s 커질까요? (소수 첫째 자리까지)</p>
+<div class="controls"><input id="answerA" type="number" step="0.1" aria-label="1 Mpc당 후퇴속도 증가량"><span>km/s</span><button class="primary" id="checkA">확인</button><button class="teacher-only" id="fillA">정답 채우기(교사용)</button></div><p class="msg" id="answerMsg"></p></div>
+<div class="terms" id="hubbleNote" hidden></div>
+</div>
+</div>
+</section>
+
+<!-- STEP 6 -->
+<section class="stage" data-step="6" hidden>
+<span class="tag">3차시 · STEP 6</span>
+<h2>학습한 모델로 예측하고 평가하기</h2>
+<p class="lead">학습에 쓰지 않고 남겨 두었던 <b>검증용 초신성</b>으로 모델의 예측 실력을 평가합니다. 모델: <b id="modelEq">–</b></p>
+<div class="chips"><details><summary>예측</summary>학습한 모델에 새로운 입력을 넣어 결과를 계산하는 것</details><details><summary>일반화</summary>학습에 쓰지 않은 새로운 자료에서도 모델이 잘 맞는 정도</details></div>
+<div class="lesson">
+<h3>1. 검증용 초신성 하나 예측하기</h3>
+<div class="qbox"><p id="pred1Q">–</p>
+<div class="controls"><input id="pred1" type="number" step="any" aria-label="예측한 후퇴속도"><span>km/s</span><button class="primary" id="pred1Check">확인</button></div><p class="msg" id="pred1Msg"></p></div>
+</div>
+<div class="lesson" id="testResults" hidden>
+<h3>2. 검증용 초신성 전체 평가</h3>
+<div class="plot-layout">
+<div class="canvasbox"><canvas id="testPlot" class="tall"></canvas><p class="legend"><span class="dot train"></span>학습용 <span class="dot test"></span>검증용 <span class="lineKey"></span>모델 <i>v</i> = <i>ar</i></p></div>
+<aside>
+<div class="stats one"><div><small>학습용 자료의 평균 오차</small><b id="maeTrain">–</b></div><div><small>검증용 자료의 평균 오차</small><b id="maeTest">–</b></div></div>
+<p class="note">평균 오차는 |예측값 − 실제값|의 평균이고, 괄호 안은 실제값에 대한 비율입니다.</p>
+<div class="qbox"><p>학습에 쓰지 않은 검증용 자료에서도 모델이 비슷하게 맞았나요? 그렇게 판단한 이유는?</p><textarea id="note6" rows="3" placeholder="관찰한 결과와 이유를 써 보세요."></textarea></div>
+</aside>
+</div>
+<div class="tablewrap"><table><thead><tr><th>검증용 초신성</th><th><i>r</i> (Mpc)</th><th>실제 <i>v</i></th><th>예측 <i>v</i> = <i>ar</i></th><th>오차</th></tr></thead><tbody id="testRows"></tbody></table></div>
+</div>
+<div class="lesson">
+<h3>3. 거리를 모르는 은하의 거리 예측하기</h3>
+<p>천문학자들은 허블 법칙을 이용해, 적색편이만 측정한 은하까지의 거리를 추정합니다. <i>v</i> = <i>cz</i>로 속도를 구한 뒤 <i>r</i> = <i>v</i> ÷ <i>a</i>로 계산합니다.</p>
+<div class="controls"><label>적색편이 <i>z</i><input id="newZ" type="number" step="0.005" min="0" max="0.1" value="0.03"></label><div class="calcout" id="newOut">–</div></div>
+<div class="qbox"><p><b>Q.</b> 적색편이가 <i>z</i> = 0.02인 은하까지의 거리는 약 몇 Mpc일까요? (정수로)</p>
+<div class="controls"><input id="pred2" type="number" step="any" aria-label="예측한 거리"><span>Mpc</span><button class="primary" id="pred2Check">확인</button><button class="teacher-only" id="fill6">정답 채우기(교사용)</button></div><p class="msg" id="pred2Msg"></p></div>
+</div>
+</section>
+
+<!-- STEP 7 -->
+<section class="stage" data-step="7" hidden>
+<span class="tag">3차시 · STEP 7</span>
+<h2>표본을 바꾸면 모델도 바뀔까?</h2>
+<p class="lead">AI 모델은 어떤 데이터로 학습했는지에 따라 달라집니다. 조건을 바꿔 여러 번 학습시키고 결과를 기록해 봅시다. 여기서는 컴퓨터가 계산과 학습을 한 번에 처리합니다.</p>
+<div class="chips"><details><summary>데이터 편향</summary>학습 데이터가 한쪽으로 치우쳐 모델이 다른 상황에서 잘 맞지 않게 되는 것</details></div>
+<div class="rule"><b>실험해 보기</b><ol><li>같은 조건으로 세 번 학습시키면 <i>a</i>는 얼마나 달라질까?</li><li>표본 수를 20개와 150개로 바꾸면 <i>a</i>의 흔들림은 어떻게 달라질까?</li><li>가까운 초신성, 전체, 먼 초신성으로 학습시키면 <i>a</i>는 어떻게 달라질까?</li></ol></div>
+<div class="controls">
+<label>자료 범위<select id="expRange"><option value="near">가까운 초신성 (z &lt; 0.1)</option><option value="all">전체 초신성</option><option value="far">먼 초신성 (z ≥ 0.3)</option></select></label>
+<label>표본 개수<input id="expCount" type="number" min="20" value="30"></label>
+<button class="primary" id="expRun">새 표본으로 학습하기</button>
+</div>
+<div class="canvasbox"><canvas id="histPlot" class="short"></canvas></div>
+<div class="tablewrap log"><table><thead><tr><th>회차</th><th>자료 범위</th><th>표본 수</th><th>최대 <i>z</i></th><th>학습한 <i>a</i></th><th>검증 평균 오차</th></tr></thead><tbody id="histRows"></tbody></table></div>
+<div class="lesson">
+<h3>전체 자료로 보는 직선 모델의 한계</h3>
+<p>초신성 1,048개를 모두 찍고, 가까운 초신성으로 학습한 모델과 전체로 학습한 모델을 함께 그렸습니다.</p>
+<div class="canvasbox"><canvas id="allPlot" class="tall"></canvas><p class="legend"><span class="dot all"></span>초신성 1,048개 <span class="lineKey near"></span>가까운 초신성으로 학습 <span class="lineKey wide"></span>전체로 학습 <span class="lineKey light"></span>빛의 속도</p></div>
+<div class="warning" id="limitText"></div>
+</div>
+<div class="lesson">
+<h3>AI 원리로 돌아가기</h3>
+<div class="tablewrap"><table class="map"><thead><tr><th>우리가 한 일</th><th>AI 용어</th><th>실제 AI와 다른 점</th></tr></thead><tbody>
+<tr><td>표본을 학습용과 검증용으로 나눔</td><td>학습 데이터, 검증 데이터</td><td>실제로는 훨씬 많은 자료를 씀</td></tr>
+<tr><td>관계를 <i>v</i> = <i>ar</i>로 정함</td><td>모델, 매개변수</td><td>실제 모델은 매개변수가 수백만 개 이상</td></tr>
+<tr><td>오차제곱합 <i>S</i>(<i>a</i>)를 정의함</td><td>손실함수</td><td>문제에 따라 다른 손실함수도 씀</td></tr>
+<tr><td>양옆을 비교하며 <i>a</i>를 고침</td><td>학습(최적화)</td><td>실제로는 미분을 이용한 경사하강법을 주로 씀</td></tr>
+<tr><td>검증용 초신성과 새 은하를 예측함</td><td>예측, 일반화</td><td>원리는 같음</td></tr>
+<tr><td>자료 범위에 따라 <i>a</i>가 달라짐</td><td>데이터 편향</td><td>원리는 같음</td></tr>
+</tbody></table></div>
+<div class="qbox"><p><b>성찰 1.</b> AI(컴퓨터)는 왜 이 <i>a</i>를 골랐을까요? 손실함수라는 말을 넣어 설명해 보세요.</p><textarea rows="3" placeholder="나의 설명"></textarea></div>
+<div class="qbox"><p><b>성찰 2.</b> 가까운 초신성으로 학습한 모델이 먼 은하의 속도를 잘 예측하지 못하는 이유는 무엇일까요?</p><textarea rows="3" placeholder="나의 설명"></textarea></div>
+</div>
+</section>
+
+</main>
+<footer><button id="prev" hidden>← 이전</button><span id="toast">STEP 0부터 시작해 보세요.</span><button class="primary" id="next" disabled>다음 →</button></footer>
+<script src="script.js"></script>
+</body>
+</html>
